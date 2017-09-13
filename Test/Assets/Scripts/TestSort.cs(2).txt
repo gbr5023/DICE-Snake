@@ -1,0 +1,561 @@
+﻿using System.Collections;
+using System;
+
+public class TestSort
+{
+	TestImport ti;
+	string[][] variables;
+	double[] bge; // balanced growth equivalent (% reduction from no damages)
+	double[] dam; // x-axis- total damage (% consumption stream)
+	double[] ptemp; // y-axis- reliability of tempurature stabilization (%)
+	double[] abate; // z-axis- total abatement cost (% consumption stream)
+	int[] colorR; // red value of point color
+	int[] colorG; // green value of point color
+	int[] colorB; // blue value of point color
+	int[] colorA; // opacity of point color (between 0=fully transparent and 1=fully opaque)
+
+	int row;
+
+	int colBGE;
+	int colDAM;
+	int colPTEMP;
+	int colABATE;
+
+	int colR;
+	int colG;
+	int colB;
+	int colA;
+
+	public TestSort() // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		row = 2914; // 2914 rows of data in csv
+
+		colBGE = 0; // index of BGE column
+		colDAM = 1; // index of DAM column
+		colPTEMP = 2; // index of PTEMP column
+		colABATE = 3; // index of ABATE column
+
+		colR = 4; // index of color R column
+		colG = 5; // index of color G column
+		colB = 6; // index of color B column
+		colA = 7; // index of color A column
+
+		ti = new TestImport();
+		variables = ImportVariables();
+		//PrintJagged(variables); // UNCOMMENT THIS TO PRINT VARIABLES JAGGED ARRAY
+
+		bge = new double[variables.Length];
+		bge = SetBGE(variables);
+		//PrintDouble(bge); UNCOMMENT THIS TO PRINT BGE ARRAY
+
+		dam = new double[variables.Length];
+		dam = SetDAM(variables);
+		//PrintDouble(dam); UNCOMMENT THIS TO PRINT DAM ARRAY
+
+		ptemp = new double[variables.Length];
+		ptemp = SetPTEMP(variables);
+		//PrintDouble(ptemp); UNCOMMENT THIS TO PRINT PTEMP ARRAY
+
+		abate = new double[variables.Length];
+		abate = SetABATE(variables);
+		//PrintDouble(abate); UNCOMMENT THIS TO PRINT ABATE ARRAY
+
+
+		colorR = new int[variables.Length];
+		colorR = SetColorR(variables);
+		//PrintInt(colorR); UNCOMMENT THIS TO PRINT ColorR ARRAY
+
+		colorG = new int[variables.Length];
+		colorG = SetColorG(variables);
+		//PrintInt(colorG); UNCOMMENT THIS TO PRINT ColorG ARRAY
+
+		colorB = new int[variables.Length];
+		colorB = SetColorB(variables);
+		//PrintInt(colorB); UNCOMMENT THIS TO PRINT ColorB ARRAY
+
+		colorA = new int[variables.Length];
+		colorA = SetColorA(variables);
+		//PrintInt(colorA); UNCOMMENT THIS TO PRINT ColorA ARRAY
+	}
+
+	public string[][] ImportVariables() // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		variables = ti.GetVariables();
+
+		return variables;
+	}
+
+
+
+	// ********************* VARIABLES' ARRAYS ******************************************* //
+
+
+	public double[] SetBGE(string[][] variables) // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = colBGE; j <= colBGE; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				double tempDouble = Convert.ToDouble(tempStr);
+				bge[i] = tempDouble;
+			}
+		}
+
+		return bge;
+	}
+
+	public double[] GetBGE() // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		return bge;
+	}
+
+	public double[] SetDAM(string[][] variables) // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = colDAM; j <= colDAM; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				double tempDouble = Convert.ToDouble(tempStr);
+				dam[i] = tempDouble;
+			}
+		}
+
+		return dam;
+	}
+
+	public double[] GetDAM() // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		return dam;
+	}
+
+	public double[] SetPTEMP(string[][] variables) // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = colPTEMP; j <= colPTEMP; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				double tempDouble = Convert.ToDouble(tempStr);
+				ptemp[i] = tempDouble;
+			}
+		}
+
+		return ptemp;
+	}
+
+	public double[] GetPTEMP() // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		return ptemp;
+	}
+
+	public double[] SetABATE(string[][] variables) // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = colABATE; j <= colABATE; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				double tempDouble = Convert.ToDouble(tempStr);
+				abate[i] = tempDouble;
+			}
+		}
+
+		return abate;
+	}
+
+	public double[] GetABATE() // FINISHED!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+	{
+		return abate;
+	}
+
+
+	// ********************* COLORS ARRAYS ******************************************* //
+
+
+	public int[] SetColorR(string[][] variables) // CHANGE TO BYTE ARRAY!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+    {
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = colR; j <= colR; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				int tempInt = Convert.ToInt32(tempStr);
+				colorR[i] = tempInt;
+			}
+		}
+
+		return colorR;
+	}
+
+	public int[] GetColorR() // CHANGE TO BYTE ARRAY!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+    {
+		return colorR;
+	}
+
+	public int[] SetColorG(string[][] variables) // CHANGE TO BYTE ARRAY!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+    {
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = colG; j <= colG; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				int tempInt = Convert.ToInt32(tempStr);
+				colorG[i] = tempInt;
+			}
+		}
+
+		return colorG;
+	}
+
+	public int[] GetColorG() // CHANGE TO BYTE ARRAY!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+    {
+		return colorG;
+	}
+
+	public int[] SetColorB(string[][] variables) // CHANGE TO BYTE ARRAY!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+    {
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = colB; j <= colB; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				int tempInt = Convert.ToInt32(tempStr);
+				colorB[i] = tempInt;
+			}
+		}
+
+		return colorB;
+	}
+
+	public int[] GetColorB() // CHANGE TO BYTE ARRAY!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+    {
+		return colorB;
+	}
+
+	public int[] SetColorA(string[][] variables) // CHANGE TO BYTE ARRAY!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+    {
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = colA; j <= colA; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				int tempInt = Convert.ToInt32(tempStr);
+				colorA[i] = tempInt;
+			}
+		}
+
+		return colorA;
+	}
+
+	public int[] GetColorA() // CHANGE TO BYTE ARRAY!!!!!!!!!!!!!!!!!!!!!!!!!!! *******************
+    {
+		return colorA;
+	}
+
+
+
+	/* *************************************** UNCOMMENT THE PRINT METHODS TO TEST ARRAY METHOD CALLING ********************************** */
+
+
+	/*
+	public void PrintJagged(string[][] variables)
+	{
+		for (int i = 0; i < variables.Length; i++)
+		{
+			string[] innerArray = variables[i];
+
+			for (int a = 0; a < innerArray.Length; a++)
+			{
+				Console.Write(innerArray[a] + " ");
+			}
+
+			Console.WriteLine();
+		} Console.WriteLine("*******************************************");
+	}
+
+	public void PrintDouble(double[] doubleArray)
+	{
+		for (int i = 0; i < doubleArray.Length; i++)
+		{
+			Console.Write(doubleArray[i] + " ");
+			Console.WriteLine();
+		}
+		Console.WriteLine("*******************************************");
+	}
+
+	public void PrintInt(int[] intArray)
+	{
+		for (int i = 0; i < intArray.Length; i++)
+		{
+			Console.Write(intArray[i] + " ");
+			Console.WriteLine();
+		}
+		Console.WriteLine("*******************************************");
+	}
+	*/
+}
+
+
+// ****************************************** WHAT DID NOT WORK (BELOW!!!) ************************************************
+
+
+
+/*
+	// Use this for initialization
+public void Start ()
+{
+
+
+	//xyz = new double[variables.Length][]; // initialize #rows in xyz array
+	//rgba = new int[variables.Length][]; // initialize #rows in rgba array
+
+        for (int i = 0; i < variables.Length; i++)
+        {
+            xyz[i] = new double[col]; // assign 8 "columns" to each array
+            rgba[i] = new int[col]; // assign 8 "columns" to each array
+        }
+        
+
+
+	for (int i = 0; i < row; i++) // outer loop loops through rows
+	{
+		string[] innerArray = variables[i];
+
+		for (int j = 0; j < col; j++) // inner loop loops through columns
+		{
+			if(j < color) // populate dam/ptemp/abate arrays from jagged variable array
+			{
+				switch (j)
+				{
+				case 0: // bge array
+					string tempStr = innerArray[j];
+					double tempDouble = Convert.ToDouble(tempStr);
+					bge[i] = tempDouble;
+					break;
+				case 1: // dam array
+					string tempStr1 = innerArray[j];
+					double tempDouble1 = Convert.ToDouble(tempStr1);
+					dam[i] = tempDouble1;
+					break;
+				case 2: // ptemp array
+					string tempStr2 = innerArray[j]; 
+					double tempDouble2 = Convert.ToDouble(tempStr2);
+					ptemp[i] = tempDouble2;
+					break;
+				case 3: // abate array
+					string tempStr3 = innerArray[j];
+					double tempDouble3 = Convert.ToDouble(tempStr3);
+					abate[i] = tempDouble3;
+					break;
+				}
+			}
+			else // populate color array from jagged variable array
+			{
+				switch(j)
+				{
+				case 4: // colorR array
+					string tempStr4 = innerArray[j];
+					int tempInt4 = Convert.ToInt32(tempStr4);
+					colorR[i] = tempInt4;
+					break;
+				case 5: // colorG array
+					string tempStr5 = innerArray[j];
+					int tempInt5 = Convert.ToInt32(tempStr5);
+					colorG[i] = tempInt5;
+					break;
+				case 6: // colorB array
+					string tempStr6 = innerArray[j];
+					int tempInt6 = Convert.ToInt32(tempStr6);
+					colorB[i] = tempInt6;
+					break;
+				case 7: // colorA array
+					string tempStr7 = innerArray[j];
+					int tempInt7 = Convert.ToInt32(tempStr7);
+					colorA[i] = tempInt7;
+					break;
+				}
+			}
+		}
+	}
+
+}
+
+public double[] getBGE()
+{
+	for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+	{
+		string[] innerArray = variables[i];
+
+		for (int j = 0; j < col; j++) // inner loop loops through variables' columns
+		{
+			string tempStr = innerArray[j];
+			double tempDouble = Convert.ToDouble(tempStr);
+			bge[i] = tempDouble;
+		}
+	}
+
+	return bge;
+}
+
+
+
+
+/*
+public double[] Dam
+{
+	get
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = 0; j < col; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				double tempDouble = Convert.ToDouble(tempStr);
+				dam[i] = tempDouble;
+			}
+		}
+
+		return dam;
+	}
+}
+
+public double[] Ptemp
+{
+	get
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = 0; j < col; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				double tempDouble = Convert.ToDouble(tempStr);
+				ptemp[i] = tempDouble;
+			}
+		}
+
+		return ptemp;
+	}
+}
+
+public double[] Abate
+{
+	get
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = 0; j < col; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				double tempDouble = Convert.ToDouble(tempStr);
+				abate[i] = tempDouble;
+			}
+		}
+
+		return abate;
+	}
+}
+
+public int[] cR
+{
+	get
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = 0; j < col; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				int tempInt = Convert.ToInt32(tempStr);
+				colorR[i] = tempInt;
+			}
+		}
+
+		return colorR;
+	}
+}
+
+public int[] cG
+{
+	get
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = 0; j < col; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				int tempInt = Convert.ToInt32(tempStr);
+				colorG[i] = tempInt;
+			}
+		}
+
+		return colorG;
+	}
+}
+
+public int[] cB
+{
+	get
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = 0; j < col; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				int tempInt = Convert.ToInt32(tempStr);
+				colorB[i] = tempInt;
+			}
+		}
+
+		return colorB;
+	}
+}
+
+public int[] cA
+{
+	get
+	{
+		for (int i = 0; i < row; i++) // outer loop loops through variables' rows
+		{
+			string[] innerArray = variables[i];
+
+			for (int j = 0; j < col; j++) // inner loop loops through variables' columns
+			{
+				string tempStr = innerArray[j];
+				int tempInt = Convert.ToInt32(tempStr);
+				colorA[i] = tempInt;
+			}
+		}
+
+		return colorA;
+	}
+}
+*/

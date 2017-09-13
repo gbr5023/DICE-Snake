@@ -1,0 +1,105 @@
+﻿using UnityEngine;
+using System.Collections;
+using System;
+using System.Linq;
+
+public class TestDisplay : MonoBehaviour 
+{
+	//private int row = 2914; // 2914 rows of data in csv
+	//private int col = 8; // eight columns in csv
+	//private int color = 5; // fifth column of csv
+
+	private TestSort ts;
+	private int resolution = 2914;
+	private ParticleSystem.Particle[] points;
+
+	double[] bge; // balanced growth equivalent (% reduction from no damages)
+	double[] dam; // x-axis- total damage (% consumption stream)
+	double[] ptemp; // y-axis- reliability of tempurature stabilization (%)
+	double[] abate; // z-axis- total abatement cost (% consumption stream)
+	int[] colorR; // red value of point color
+	int[] colorG; // green value of point color
+	int[] colorB; // blue value of point color
+	int[] colorA; // opacity of point color (between 0=fully transparent and 1=fully opaque)
+
+    byte[] byteR;
+    byte[] byteG;
+    byte[] byteB;
+    byte[] byteA;
+
+    // Use this for initialization *******************************************************************************************
+    void Start () 
+	{
+		ts = new TestSort();
+		ts.ImportVariables ();
+
+		bge = new double[resolution];
+		bge = ts.GetBGE();
+        float[] floatBGE = Array.ConvertAll<double, float>(bge, d => (float)d);
+
+        // dam, ptemp, abate used for graph
+        dam = new double[resolution];
+		dam = ts.GetDAM();
+
+		ptemp = new double[resolution];
+		ptemp = ts.GetPTEMP();
+
+		abate = new double[resolution];
+		abate = ts.GetABATE();
+
+		// arrays of the RGBA values
+		colorR = new int[resolution];
+		colorR = ts.GetColorR();
+        byteR = colorR.Select(i => (byte)i).ToArray();
+        colorR = null;
+
+        colorG = new int[resolution];
+		colorG = ts.GetColorG();
+        byteG = colorG.Select(i => (byte)i).ToArray();
+        colorR = null;
+
+        colorB = new int[resolution];
+		colorB = ts.GetColorB();
+        byteB = colorB.Select(i => (byte)i).ToArray();
+        colorR = null;
+
+        colorA = new int[resolution];
+		colorA = ts.GetColorA();
+        byteA = colorA.Select(i => (byte)i).ToArray();
+        colorR = null;
+
+        CreatePoints ();
+	}
+
+	private void CreatePoints () 
+	{
+		points = new ParticleSystem.Particle[resolution];
+		float increment = 1f / (resolution - 1);
+		for (int i = 0; i < resolution; i++) {
+			float x = i * increment;
+			points[i].position = new Vector3(x, 0f, 0f);
+			points[i].startColor = new Color32
+											(
+												byteR[i], 
+												byteG[i], 
+                                                byteB[i], 
+                                                byteA[i]
+											);
+			points[i].startSize = 0.1f;
+		}
+	}
+
+	void Update () 
+	{
+		for (int i = 0; i < resolution; i++) {
+			Vector3 p = points[i].position;
+			p.y = p.x;
+			points[i].position = p;
+			Color c = points[i].startColor;
+			c.g = p.y;
+			points[i].startColor = c;
+
+		}
+		GetComponent<ParticleSystem>().SetParticles(points, points.Length);
+	}
+} 

@@ -1,0 +1,26 @@
+﻿using System.Linq;
+using System.IO;
+using System;
+
+public class TestImport
+{
+	string[][] variables;
+
+	public TestImport()
+	{
+		variables = GetVariables();
+	}
+
+	// initialize and accessor for variables jagged array
+	public string[][] GetVariables()
+	{
+        //string path = "C:/Users/gbr5023/Desktop/DICESnake/diceSnake_output"; // FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        string path = "C:/Users/Gisward/Desktop//diceSnake_output";
+        string file = "ALLscaledwithRGB.csv";
+
+		variables = File.ReadAllLines(Path.Combine(path, file))
+			.Select(line => line.Split(',')).ToArray();
+
+		return variables;
+	}
+}
